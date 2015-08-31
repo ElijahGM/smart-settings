@@ -1,0 +1,21 @@
+{
+    "name": "esoftslimited/smart-settings",
+    "description": "A cool plugin that is extensible that add support for addition of system wide settings into your application",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elijah Mwangi",
+            "email": "emwangi.g@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "esoftslimited\\settings\\": ""
+        }
+    }
+}
