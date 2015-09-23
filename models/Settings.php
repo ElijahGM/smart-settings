@@ -105,7 +105,7 @@ class Settings extends ActiveRecord implements ISettings
      * @return array of settings in a scope.
      */
     public function getAll($category,$scope='system_wide',$owner=null){
-      
+ 
      return $this->find()->scope($scope)->category($category)->parent($owner)->all();
     }
     function loadModel($category, $key){

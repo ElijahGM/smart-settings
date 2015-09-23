@@ -20,19 +20,37 @@ class Settings extends Component
        
 	}
 	/**
-	* update setting safely
+	* update setting multiple Settings
 	* @param $Ckey compound key derived from category.key
 	* @param $value value of the settings
 	* @param $type type of the settings
 	* @param $scope of the settings custom|system_wide
 	**/
-	public function update($Ckey,$args){
+	public function updateBatch($category,$args){
        //exit(print_r($args,1));
-       list($category,$key)=explode(".", $Ckey);
+      foreach ($args as $key => $value) {
+      	$model=$this->get($category.".".$key); 
+      	 if($model)
+      	 $model->value=$value;
+      	 $model->save(); 
+      }     
+       	 	
+       return false;
+	}
+	/**
+	* update setting elemnt safely
+	* @param $Ckey compound key derived from category.key
+	* @param $value value of the settings
+	**/
+	public function update($Ckey,$value){
+      
        $model=$this->get($Ckey);       
        if($model)
-       	 return $model->load(['Settings'=>$args]) && $model->save();
-       return false;
+       	  $model->value=$value;
+       	 if($model->save())
+       	 	return false;
+       	 	
+        return false;
 	}
 	/**
 	* Set setting 
