@@ -8,7 +8,7 @@ class m150831_130422_create_smart_settings_table extends Migration
     public function up()
     {
         $this->createTable(
-            '{{%sm_settings}}',
+            '{{%settings}}',
             [
                 'id'         => Schema::TYPE_PK,
                 'type'       => Schema::TYPE_STRING,

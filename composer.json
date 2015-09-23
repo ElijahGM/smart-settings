@@ -17,5 +17,9 @@
         "psr-4": {
             "esoftslimited\\settings\\": ""
         }
+    },
+    "extra": {
+        "bootstrap": "esoftslimited\\settings\\Bootstrap",        
+        
     }
 }

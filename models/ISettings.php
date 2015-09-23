@@ -20,8 +20,11 @@ interface ISettings
      * @param $scope default systemwide;
      * @return array
      */
-    public function getSettings($scope='custom|systemwide');
-
+    public function getAll($category,$scope='custom|systemwide',$parent=null);
+    /**
+    * get Setting
+    **/
+    public function get($category, $key,$parent=null);
     /**
      * Saves a setting
      *
@@ -32,7 +35,7 @@ interface ISettings
      * @return bool
      * @throws \yii\base\InvalidConfigException
      */
-    public function set($category, $key, $value, $type,$options);
+    public function set($category, $key, $value, $type,$scope='custom',$options=[]);
 
     /**
      * Deletes a settings
@@ -73,7 +76,7 @@ interface ISettings
      * @param $scope
      * @return boolean True on success, false on error
      */
-    public function setScope($key,$scope);
+    public function setScope($key,$scope,$owner=null);
     /**
      * Set parent of a setting if set the scope is saved as 'custom' accessible only by creator
      *

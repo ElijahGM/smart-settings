@@ -43,10 +43,7 @@ class SettingsAction extends Action
     {
         if(isset($_POST)){
             foreach ($_POST as $scope => $args) {
-              foreach ($args as $key => $value) {
-                 
-                  Yii::$app->settings->set($scope.".".$key,$value);
-              }
+              Yii::$app->settings->update($scope.".".array_keys($args)[0],$args);
             }
            //$this->controller->redirect(Url::previous());
         }
