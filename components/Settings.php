@@ -82,6 +82,18 @@ class Settings extends Component
         return null;
 	}
 	/**
+	* @param $CKey //category.key	
+	* @param $parent
+	* @return Settings
+	**/
+	public function getVar($Ckey,$parent=null){
+		list($category,$key)=explode(".", $Ckey);
+		$model=$this->get($Ckey,$parent);
+        if($model)
+       	  return $model->value;       	
+        return null;
+	}
+	/**
 	* @param $category
 	* @param $scope
 	* @param $parent

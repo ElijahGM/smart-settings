@@ -37,10 +37,12 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof \yii\web\Application){
-           $app->setComponents(['settings'=>['class'=>'esoftslimited\settings\components\Settings']]);
+         
 
           
         }
+          $app->setComponents(['settings'=>['class'=>'esoftslimited\settings\components\Settings']]);
+          
         if (!isset($app->get('i18n')->translations['settings*'])) {
                 $app->get('i18n')->translations['settings*'] = [
                     'class'    => PhpMessageSource::className(),

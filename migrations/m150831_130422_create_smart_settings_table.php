@@ -20,10 +20,9 @@ class m150831_130422_create_smart_settings_table extends Migration
                 'options'    => Schema::TYPE_TEXT, //other availabe opptions for this settings
                 'scope'      => Schema::TYPE_TEXT, //scope of this settings custom|ssytem wide
                 'active'     => Schema::TYPE_BOOLEAN,
-                'created_by' => Schema::TYPE_INTEGER,
-                'updated_by' => Schema::TYPE_INTEGER,
-                'created_at' => Schema::TYPE_TIMESTAMP,
-                'modified_at'=> Schema::TYPE_TIMESTAMP,
+                'created_by' => Schema::TYPE_DATETIME,
+                'created_at' => Schema::TYPE_DATETIME,
+                'modified_at'=> Schema::TYPE_DATETIME,
             ]
         );
     }

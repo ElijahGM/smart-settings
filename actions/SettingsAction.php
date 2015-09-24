@@ -41,11 +41,9 @@ class SettingsAction extends Action
      */
     public function run()
     {
-        if(isset($_POST)){ 
-            $data=$_POST;
-            unset($data['_csrf']);
-            foreach ($data as $category => $args) {  
-              Yii::$app->settings->updateBatch($category,$args);
+        if(isset($_POST)){
+            foreach ($_POST as $scope => $args) {
+              Yii::$app->settings->update($scope.".".array_keys($args)[0],$args);
             }
            //$this->controller->redirect(Url::previous());
         }
@@ -53,7 +51,11 @@ class SettingsAction extends Action
         if (Yii::$app->getRequest()->getIsAjax()) {
             return null;
         } else {
-            return $this->controller->render($this->view ?: $this->id);
+            return $this->controller->render($this->view ?: $this->id, [
+                'sections' => $this->sections,
+                'selected' => $this->active,
+                  
+            ]);
         }
     }
 }

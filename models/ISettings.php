@@ -15,6 +15,15 @@ namespace esoftslimited\settings\models;
 interface ISettings
 {
 
+    
+    //public function updateBatch($category,$args);
+    /**
+    * Returns 
+    * @param $CKey //category.key   
+    * @param $parent
+    * @return Settings
+    **/
+    //public function getVar($Ckey,$parent=null);
     /**
      * Gets all settings of a given scope
      * @param $scope default systemwide;
