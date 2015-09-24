@@ -42,10 +42,16 @@ class SettingsAction extends Action
     public function run()
     {
         if(isset($_POST)){
-            foreach ($_POST as $scope => $args) {
-              Yii::$app->settings->update($scope.".".array_keys($args)[0],$args);
+            $settings=$_POST;
+            unset($settings['_csrf']);
+            $return=false;
+            foreach ($settings as $category => $args) {
+              $return=Yii::$app->settings->updateBatch($category,$args);
             }
-           //$this->controller->redirect(Url::previous());
+            
+            Yii::$app->session->setFlash('success',Yii::t('app','Settings updated'));
+            
+           
         }
         
         if (Yii::$app->getRequest()->getIsAjax()) {
