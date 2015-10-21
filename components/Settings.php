@@ -27,15 +27,13 @@ class Settings extends Component
 	* @param $scope of the settings custom|system_wide
 	**/
 	public function updateBatch($category,$args){
-       //exit(print_r($args,1));
+      $res=false;
+      
       foreach ($args as $key => $value) {
-      	$model=$this->get($category.".".$key); 
-      	 if($model)
-      	 $model->value=$value;
-      	 $model->save(); 
+      	$res=$this->update($category.".".$key,$value);     	
       }     
        	 	
-       return false;
+       return $res;
 	}
 	/**
 	* update setting elemnt safely
@@ -43,12 +41,18 @@ class Settings extends Component
 	* @param $value value of the settings
 	**/
 	public function update($Ckey,$value){
-      
+       
        $model=$this->get($Ckey);       
-       if($model)
-       	  $model->value=$value;
-       	 if($model->save())
-       	 	return false;
+       if($model){
+       	  
+      	 	if(preg_match("/bool/i", $model->type) && !isset($_REQUEST[$model->category][$model->key])){
+      	 		 $model->value=0;
+      	 	}else{
+      	 		 $model->value=$value;
+      	    }
+      	
+      	 return $model->save(); 
+      	}
        	 	
         return false;
 	}
@@ -83,14 +87,15 @@ class Settings extends Component
 	}
 	/**
 	* @param $CKey //category.key	
+	* @param $args
 	* @param $parent
 	* @return Settings
 	**/
-	public function getVar($Ckey,$parent=null){
+	public function getVar($Ckey,$args=[],$parent=null){
 		list($category,$key)=explode(".", $Ckey);
 		$model=$this->get($Ckey,$parent);
         if($model)
-       	  return $model->value;       	
+       	  return !empty($args)?Yii::t('app',$model->value,$args):$model->value;       	
         return null;
 	}
 	/**

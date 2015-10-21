@@ -68,8 +68,17 @@ class SettingsPanel extends Widget
             $template=$this->radioTemplate;
             $this->radioOptions['item']=(!$this->radioCallback)?function($index, $label, $name, $checked, $value)use ($template){
                  
-                      return strtr($template,['{input}'=>Html::radio($name, $checked, ['value'  => $value]),'{labelText}'=>date($value,time())]);
+                      return strtr($template,['{input}'=>Html::radio($name, $checked, ['value'  => $value]),'{labelText}'=>$label]);
             }:$this->radioCallback;
+
+            return Html::radioList($name,$setting->value,$data,array_merge($options,$this->radioOptions));
+        elseif(preg_match("/{dateradiolist}/i", $setting->type)):
+            $data=unserialize($setting->options);
+            $template=$this->radioTemplate;
+            $this->radioOptions['item']=function($index, $label, $name, $checked, $value)use ($template){
+                 
+                      return strtr($template,['{input}'=>Html::radio($name, $checked, ['value'  => $value]),'{labelText}'=>date($value,time())]);
+            };
 
             return Html::radioList($name,$setting->value,array_combine($data,$data),array_merge($options,$this->radioOptions));
         elseif(preg_match("/timezone/i", $setting->type)):

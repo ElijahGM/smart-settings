@@ -41,14 +41,15 @@ class SettingsAction extends Action
      */
     public function run()
     {
-        if(isset($_POST)){
+      
+        if(isset($_POST)){ 
             $settings=$_POST;
             unset($settings['_csrf']);
             $return=false;
-            foreach ($settings as $category => $args) {
+            foreach ($settings as $category => $args) {               
               $return=Yii::$app->settings->updateBatch($category,$args);
             }
-            
+           
             Yii::$app->session->setFlash('success',Yii::t('app','Settings updated'));
             
            
