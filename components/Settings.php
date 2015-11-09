@@ -51,7 +51,9 @@ class Settings extends Component
       	 		 $model->value=$value;
       	    }
       	
-      	 return $model->save(); 
+      	 if(!$model->save()){
+      	 	print_r($model->errors);
+      	 }
       	}
        	 	
         return false;

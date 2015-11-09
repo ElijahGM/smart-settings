@@ -117,9 +117,9 @@ class Settings extends ActiveRecord implements ISettings
      */
     public function get($category, $key,$parent=null){
       if(!is_null($parent)){
-        return $this->find()->category($category)->where(['key'=>$key,'parent'=>$parent])->one();
+        return $this->find()->category($category)->andWhere(['key'=>$key,'parent'=>$parent])->one();
       }
-      return $this->find()->category($category)->where(['key'=>$key])->one();
+      return $this->find()->category($category)->andWhere(['key'=>$key])->one();
     }
     public function set($category, $key, $value, $type,$scope='system_wide',$options=[]){
       $owner=@$options['owner'];
