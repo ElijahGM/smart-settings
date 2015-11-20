@@ -51,7 +51,9 @@ class Settings extends Component
       	 		 $model->value=$value;
       	    }
       	
-      	 return $model->save(); 
+      	 if(!$model->save()){
+      	 	print_r($model->errors);
+      	 }
       	}
        	 	
         return false;
@@ -66,11 +68,11 @@ class Settings extends Component
 	public function set($Ckey,$value,$type=SETTINGS_TEXT,$scope=null,$options=[]){
      
        list($category,$key)=explode(".", $Ckey);
+     
        $model=new $this->modelClass;
        $scope=(is_null($scope) )?$this->defaultScope:'system_wide';
-       if($model)
-       	$model->set($category, $key, $value, $type,$scope,$options);
-       	return $model->save();
+       if($model)       	
+       	return $model->set($category, $key, $value, $type,$scope,$options);
        return false;
 	}
     /**

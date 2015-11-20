@@ -117,9 +117,9 @@ class Settings extends ActiveRecord implements ISettings
      */
     public function get($category, $key,$parent=null){
       if(!is_null($parent)){
-        return $this->find()->category($category)->where(['key'=>$key,'parent'=>$parent])->one();
+        return $this->find()->category($category)->andWhere(['key'=>$key,'parent'=>$parent])->one();
       }
-      return $this->find()->category($category)->where(['key'=>$key])->one();
+      return $this->find()->category($category)->andWhere(['key'=>$key])->one();
     }
     public function set($category, $key, $value, $type,$scope='system_wide',$options=[]){
       $owner=@$options['owner'];
@@ -137,14 +137,14 @@ class Settings extends ActiveRecord implements ISettings
                    'label'=>@$options['label']
 
                    ]];
-      $model=$this->find()->category($category)->where(['key'=>$key])->one();
-      if(!$model) $model=$this;  
+      $model=$this->find()->category($category)->andWhere(['key'=>$key])->one();
+      if(!$model) $model=$this; 
       
-      $model->load($attributes);
-
-      if(!$model->save()){
-        throw new \Exception("Error Saving settings ".print_r($this->errors,1), 1);
-        
+      
+      if(!($model->load($attributes) && $model->save())){
+        //throw new \Exception("Error Saving settings ".print_r($model->errors,1), 1);
+        $this->errors=$model->errors;
+        return false;
       }
       return true;
     }
