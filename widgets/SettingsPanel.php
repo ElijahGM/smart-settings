@@ -16,14 +16,15 @@ class SettingsPanel extends Widget
     public $scope='custom';
     public $parent=null;
     public $action='update';
-    public $template='<div class="box box-warning">
-                <div class="box-header with-border">
+    public $submitButtonText="Update Settings";
+    public $template='<div class="portlet box portlet-blue ">
+                <div class="portlet-header with-border">
                   
-                </div><!-- /.box-header -->
-                <div class="box-body"><form method="post" action="{action}" class="" role="form">{nonce}{input}</form></div></div>';
+                </div><!-- /.portlet-header -->
+                <div class="portlet-body" style="text-align:left;"><form method="post" action="{action}" role="form">{nonce}{input}</form></div></div>';
     public $input_template='<div class="form-group">
-                              {label}
-                              {input}
+                              
+                              {label}&nbsp;{input}
                             </div>{separator}';
     public $checkboxTemplate='<div class="form-group">
                                 <div class="checkbox">
@@ -33,7 +34,7 @@ class SettingsPanel extends Widget
                                 </div>
                               </div>';
     public $checkboxOptions=['class'=>''];
-    public $radioTemplate='<div class="radio">
+    public $radioTemplate='<div class="radio-inline">
                             <label>
                               {input}
                               {labelText}
@@ -59,12 +60,16 @@ class SettingsPanel extends Widget
 
         elseif(preg_match("/bool/i", $setting->type)):
 
-            return Html::checkBox($name,$setting->value,array_merge($options,$this->checkboxOptions));
+            return Html::checkBox($name,$setting->value,array_merge($options,$this->checkboxOptions,['template'=>'']));
         elseif(preg_match("/dropdown/i", $setting->type)):
-            
-            return Html::dropDownList($name,$setting->value,unserialize($setting->options),$options);
+            $data=@unserialize($setting->options);
+            $data=(is_array($data))?$data:[];
+            return Html::dropDownList($name,$setting->value,$data,$options);
         elseif(preg_match("/radiolist/i", $setting->type)):
-            $data=unserialize($setting->options);
+
+       
+            $data=@unserialize(($setting->options));
+            $data=(is_array($data))?$data:[];
             $template=$this->radioTemplate;
             $this->radioOptions['item']=(!$this->radioCallback)?function($index, $label, $name, $checked, $value)use ($template){
                  
@@ -73,7 +78,8 @@ class SettingsPanel extends Widget
 
             return Html::radioList($name,$setting->value,$data,array_merge($options,$this->radioOptions));
         elseif(preg_match("/{dateradiolist}/i", $setting->type)):
-            $data=unserialize($setting->options);
+            $data=@unserialize($setting->options);
+            $data=(is_array($data))?$data:[];
             $template=$this->radioTemplate;
             $this->radioOptions['item']=function($index, $label, $name, $checked, $value)use ($template){
                  
@@ -127,7 +133,7 @@ class SettingsPanel extends Widget
         }
         $input.=strtr($this->input_template,[
 
-            '{input}'=>Html::submitButton('Configure',$this->buttonOptions),
+            '{input}'=>Html::submitButton($this->submitButtonText,$this->buttonOptions),
             '{label}'=>'',
             '{separator}'=>'',
             ]);

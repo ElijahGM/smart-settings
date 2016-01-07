@@ -105,8 +105,10 @@ class Settings extends ActiveRecord implements ISettings
      * @return array of settings in a scope.
      */
     public function getAll($category,$scope='system_wide',$owner=null){
-     
-     return $this->find()->scope($scope)->category($category)->parent($owner)->all();
+     if(!is_null($owner)){ 
+       return $this->find()->scope($scope)->category($category)->parent($owner)->all();
+     }
+     return $this->find()->scope($scope)->category($category)->all();
     }
     function loadModel($category, $key){
       
@@ -115,11 +117,16 @@ class Settings extends ActiveRecord implements ISettings
      * @inheritdoc
      * @return settings in a scope.
      */
-    public function get($category, $key,$parent=null){
-      if(!is_null($parent)){
-        return $this->find()->category($category)->andWhere(['key'=>$key,'parent'=>$parent])->one();
+    public function get($category, $key,$creator=null,$parent=null){
+
+      if(!is_null($parent) && !is_null($creator)){
+        return self::find()->category($category)->where(['key'=>$key,'parent'=>$parent,'created_by'=>$creator])->one();
+      }elseif (!is_null($parent) && is_null($creator)) {
+        return self::find()->category($category)->where(['key'=>$key,'parent'=>$parent])->one();
+      }elseif (is_null($parent) && !is_null($creator)) { 
+         return self::find()->category($category)->where(['key'=>$key,'created_by'=>$creator])->one();
       }
-      return $this->find()->category($category)->andWhere(['key'=>$key])->one();
+      return self::find()->category($category)->where(['key'=>$key])->one();
     }
     public function set($category, $key, $value, $type,$scope='system_wide',$options=[]){
       $owner=@$options['owner'];
@@ -137,14 +144,14 @@ class Settings extends ActiveRecord implements ISettings
                    'label'=>@$options['label']
 
                    ]];
-      $model=$this->find()->category($category)->andWhere(['key'=>$key])->one();
-      if(!$model) $model=$this; 
+      $model=$this->find()->category($category)->where(['key'=>$key])->one();
+      if(!$model) $model=$this;  
       
-      
-      if(!($model->load($attributes) && $model->save())){
-        //throw new \Exception("Error Saving settings ".print_r($model->errors,1), 1);
-        $this->errors=$model->errors;
-        return false;
+      $model->load($attributes);
+
+      if(!$model->save()){
+        throw new \Exception("Error Saving settings ".print_r($this->errors,1), 1);
+        
       }
       return true;
     }

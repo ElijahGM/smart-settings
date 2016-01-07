@@ -1,6 +1,6 @@
 Smart Settings
 ==============
-A cool plugin that is extensible that add support for addition of system wide settings into yii2 application
+A cool plugin that is extensible that add support for addition of system wide settings into your application
 
 Installation
 ------------

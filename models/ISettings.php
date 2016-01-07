@@ -33,7 +33,7 @@ interface ISettings
     /**
     * get Setting
     **/
-    public function get($category, $key,$parent=null);
+    public function get($category, $key,$creator=null,$parent=null);
     /**
      * Saves a setting
      *
