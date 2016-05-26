@@ -19,7 +19,10 @@
         }
     },
     "extra": {
-        "bootstrap": "esoftslimited\\settings\\Bootstrap"        
+        "bootstrap": "esoftslimited\\settings\\Bootstrap"   ,
+        "branch-alias": {           
+            "dev-master": "0.1-dev" 
+          }
         
     }
 }
